@@ -403,9 +403,51 @@ app.post('/tipoproductocreate', async (req, res) => {
 });
 
 //-------CREAR USUARIO -------
+// app.post('/usuariocreate', async (req, res) => {
+//     console.log(req.body);
+//     // Obtener los datos del cuerpo de la solicitud
+//     const { correo, claveUser, nombre, apellido, tipoUsuario } = req.body;
+
+//     async function insertarUsuario() {
+//         let connection;
+//         try {
+//             connection = await oracledb.getConnection({
+//                 user: 'ALUMNO',
+//                 password: 'Umg$2024',
+//                 connectionString: 'localhost/xe'
+//             });
+
+//             const result = await connection.execute(
+//                 `BEGIN InsertarUsuario(:correo, :clave, :nombre, :apellido, :tipoUsuario); END;`,
+//                 { correo, clave: claveUser, nombre, apellido, tipoUsuario }
+//             );
+
+//             // Realizar commit de la transacción
+//             await connection.commit();
+//             console.log(result);
+//             return result;
+//         } catch (error) {
+//             if (connection) {
+//                 // Deshacer cambios si hay un error
+//                 await connection.rollback();
+//             }
+//             return error;
+//         } finally {
+//             if (connection) {
+//                 // Cerrar la conexión
+//                 await connection.close();
+//             }
+//         }
+//     }
+
+//     insertarUsuario()
+//         .then(dbRes => { res.send(dbRes); })
+//         .catch(err => { res.send(err); });
+// });
+
 app.post('/usuariocreate', async (req, res) => {
-    // Obtener los datos del cuerpo de la solicitud
     console.log(req.body);
+    // Obtener los datos del cuerpo de la solicitud
     const { correo, claveUser, nombre, apellido, tipoUsuario } = req.body;
 
     async function insertarUsuario() {
@@ -414,14 +456,14 @@ app.post('/usuariocreate', async (req, res) => {
             connection = await oracledb.getConnection({
                 user: 'ALUMNO',
                 password: 'Umg$2024',
-                connectionString: 'localhost/xe'
+                connectString: 'localhost/xe' // La propiedad se llama connectString en lugar de connectionString
             });
 
             const result = await connection.execute(
-                `INSERT INTO Usuario (id_usuario, correo_electronico, clave, nombre, apellido, tipo_usuario) VALUES (1004, :correo, :claveUser, :nombre, :apellido, :tipoUsuario)`,
-                [correo, claveUser, nombre, apellido, tipoUsuario]
+                `BEGIN InsertarUsuario(:p_correo_electronico, :p_clave, :p_nombre, :p_apellido, :p_tipo_usuario); END;`,
+                { p_correo_electronico: correo, p_clave: claveUser, p_nombre: nombre, p_apellido: apellido, p_tipo_usuario: tipoUsuario }
             );
-            
+
             // Realizar commit de la transacción
             await connection.commit();
             console.log(result);
@@ -441,9 +483,12 @@ app.post('/usuariocreate', async (req, res) => {
     }
 
     insertarUsuario()
-        .then(dbRes => { res.send(dbRes); })
-        .catch(err => { res.send(err); });
+    .then(dbRes => {console.log("🚀 ~ app.post ~ dbRes:", dbRes); res.send(dbRes); })
+    
+   .catch(err => { res.send(err); });
 });
+        
+
 
 
 //--------------METODOS GET ------------------------------------------
