@@ -98,14 +98,14 @@ app.get('/proveedor/findall', async (req, res) => {
 });
 
 // Obtener proveedor por correo
-app.get('/proveedor/findbycorreo', async (req, res) => {
-    const { correo } = req.query;
-    if (!correo) {
+app.get('/proveedor/findbyid', async (req, res) => {
+    const { id } = req.query;
+    if (!id) {
         return res.status(400).send("El correo es obligatorio");
     }
 
     const query = `SELECT * FROM TABLE(buscar_proveedor_por_correo(:p_correo))`;
-    const params = { p_correo: correo };
+    const params = { p_correo: id };
 
     try {
         const result = await executeQuery(query, params);
@@ -204,13 +204,13 @@ app.get('/ordencompra/findall', async (req, res) => {
 
 // Obtener orden de compra por ID
 app.get('/ordencompra/findbyid', async (req, res) => {
-    const { id_orden_compra } = req.query;
-    if (!id_orden_compra) {
+    const { id } = req.query;
+    if (!id) {
         return res.status(400).send("El ID de la orden de compra es obligatorio");
     }
 
     const query = `SELECT * FROM TABLE(obtener_ordenes_compras_id(:p_id_orden_compra))`;
-    const params = { p_id_orden_compra: id_orden_compra };
+    const params = { p_id_orden_compra: id };
 
     try {
         const result = await executeQuery(query, params);
@@ -225,7 +225,8 @@ app.get('/ordencompra/findbyid', async (req, res) => {
 
 // Crear cliente
 app.post('/cliente/create', async (req, res) => {
-    const { nombre, apellido, nit, pais_origen, telefono, direccion_entrega, correo_electronico, contraseña, numero_tarjeta_credito } = req.body;
+    console.log(req.body)
+        const { nombre, apellido, nit, pais_origen, telefono, direccion_entrega, correo_electronico, contraseña, numero_tarjeta_credito } = req.body;
     if (!nombre || !apellido || !nit || !pais_origen || !telefono || !direccion_entrega || !correo_electronico || !contraseña || !numero_tarjeta_credito) {
         return res.status(400).send("Todos los campos son obligatorios");
     }
@@ -290,14 +291,14 @@ app.get('/cliente/findall', async (req, res) => {
 });
 
 // Obtener cliente por correo electrónico
-app.get('/cliente/findbycorreo', async (req, res) => {
-    const { correo_electronico } = req.query;
-    if (!correo_electronico) {
+app.get('/cliente/findbyid', async (req, res) => {
+    const { id } = req.query;
+    if (!id) {
         return res.status(400).send("El correo electrónico es obligatorio");
     }
 
     const query = `SELECT * FROM TABLE(buscar_cliente_por_correo(:p_correo_electronico))`;
-    const params = { p_correo_electronico: correo_electronico };
+    const params = { p_correo_electronico: id };
 
     try {
         const result = await executeQuery(query, params);
@@ -329,6 +330,7 @@ app.post('/tipoproducto/create', async (req, res) => {
 
 // Actualizar tipo de producto
 app.post('/tipoproducto/update', async (req, res) => {
+    console.log(req.body)
     const { id_tipo_producto, nombre_tipo_producto } = req.body;
     if (!id_tipo_producto || !nombre_tipo_producto) {
         return res.status(400).send("El ID y el nombre del tipo de producto son obligatorios");
@@ -377,13 +379,14 @@ app.get('/tipoproducto/findall', async (req, res) => {
 
 // Obtener tipo de producto por ID
 app.get('/tipoproducto/findbyid', async (req, res) => {
-    const { id_tipo_producto } = req.query;
-    if (!id_tipo_producto) {
+    console.log(req.query)
+    const { id } = req.query;
+    if (!id) {
         return res.status(400).send("El ID del tipo de producto es obligatorio");
     }
 
     const query = `SELECT * FROM TABLE(buscar_tipo_producto_por_id(:p_id_tipo_producto))`;
-    const params = { p_id_tipo_producto: id_tipo_producto };
+    const params = { p_id_tipo_producto: id };
 
     try {
         const result = await executeQuery(query, params);
@@ -397,6 +400,7 @@ app.get('/tipoproducto/findbyid', async (req, res) => {
 ///------------------------------------PRODUCTO-----------------------------------------
 // Crear producto
 app.post('/producto/create', async (req, res) => {
+    console.log(req.body)
     const { codigo_unico, nombre, descripcion, id_tipo_producto, unidad_medida, precio_sin_iva, porcentaje_ganancia, cantidad_existencia, activo, imagen_producto } = req.body;
     if (!codigo_unico || !nombre || !descripcion || !id_tipo_producto || !unidad_medida || !precio_sin_iva || !porcentaje_ganancia || !cantidad_existencia || !activo) {
         return res.status(400).send("Todos los campos son obligatorios");
@@ -413,7 +417,7 @@ app.post('/producto/create', async (req, res) => {
         p_porcentaje_ganancia: porcentaje_ganancia,
         p_cantidad_existencia: cantidad_existencia,
         p_activo: activo,
-        p_imagen_producto: imagen_producto
+        p_imagen_producto: null
     };
 
     try {
@@ -443,7 +447,7 @@ app.post('/producto/update', async (req, res) => {
         p_porcentaje_ganancia: porcentaje_ganancia,
         p_cantidad_existencia: cantidad_existencia,
         p_activo: activo,
-        p_imagen_producto: imagen_producto
+        p_imagen_producto: null
     };
 
     try {
@@ -486,13 +490,13 @@ app.get('/producto/findall', async (req, res) => {
 
 // Obtener producto por ID
 app.get('/producto/findbyid', async (req, res) => {
-    const { id_producto } = req.query;
-    if (!id_producto) {
+    const { id } = req.query;
+    if (!id) {
         return res.status(400).send("El ID del producto es obligatorio");
     }
 
     const query = `SELECT * FROM TABLE(buscar_producto_por_id(:p_id_producto))`;
-    const params = { p_id_producto: id_producto };
+    const params = { p_id_producto: id };
 
     try {
         const result = await executeQuery(query, params);
@@ -574,13 +578,13 @@ app.get('/usuario/findall', async (req, res) => {
 
 // Obtener por id
 app.get('/usuario/findbyid', async (req, res) => {
-    const { correo } = req.query;
-    if (!correo) {
+    const { id } = req.query;
+    if (!id) {
         return res.status(400).send("El correo es obligatorio");
     }
 
     const query = `SELECT * FROM TABLE(buscar_usuario_por_correo(:p_correo))`;
-    const params = { p_correo: correo };
+    const params = { p_correo: id };
 
     try {
         const result = await executeQuery(query, params);
@@ -705,13 +709,13 @@ app.get('/pedido/findall', async (req, res) => {
 
 // Obtener pedido por ID
 app.get('/pedido/findbyid', async (req, res) => {
-    const { id_pedido } = req.query;
-    if (!id_pedido) {
+    const { id } = req.query;
+    if (!id) {
         return res.status(400).send("El ID del pedido es obligatorio");
     }
 
     const query = `SELECT * FROM TABLE(ObtenerPedidoPorID(:p_id_pedido))`;
-    const params = { p_id_pedido: id_pedido };
+    const params = { p_id_pedido: id };
 
     try {
         const result = await executeQuery(query, params);
@@ -802,13 +806,13 @@ app.get('/detalle_orden_compra/findall', async (req, res) => {
 
 // Obtener detalle de orden de compra por ID
 app.get('/detalle_orden_compra/findbyid', async (req, res) => {
-    const { id_detalle_orden_compra } = req.query;
-    if (!id_detalle_orden_compra) {
+    const { id } = req.query;
+    if (!id) {
         return res.status(400).send("El ID del detalle de la orden de compra es obligatorio");
     }
 
     const query = `SELECT * FROM TABLE(buscar_detalle_orden_compra_por_id(:p_id_detalle_orden_compra))`;
-    const params = { p_id_detalle_orden_compra: id_detalle_orden_compra };
+    const params = { p_id_detalle_orden_compra: id };
 
     try {
         const result = await executeQuery(query, params);
@@ -913,13 +917,13 @@ app.get('/factura/findall', async (req, res) => {
 
 // Obtener factura por ID
 app.get('/factura/findbyid', async (req, res) => {
-    const { id_factura } = req.query;
-    if (!id_factura) {
+    const { id } = req.query;
+    if (!id) {
         return res.status(400).send("Se requiere el ID de factura");
     }
 
     const query = `SELECT * FROM TABLE(Obtener_FacturaPorID(:p_id_factura))`;
-    const params = { p_id_factura: id_factura };
+    const params = { p_id_factura: id };
 
     try {
         const result = await executeQuery(query, params);
@@ -1010,13 +1014,13 @@ app.get('/detallepedido/findall', async (req, res) => {
 
 // Obtener detalle de pedido por ID
 app.get('/detallepedido/findbyid', async (req, res) => {
-    const { id_detalle_pedido } = req.query;
-    if (!id_detalle_pedido) {
+    const { id } = req.query;
+    if (!id) {
         return res.status(400).send("Se requiere el ID de detalle de pedido");
     }
 
     const query = `SELECT * FROM TABLE(ObtenerDetallePedidoPorID(:p_id_detalle_pedido))`;
-    const params = { p_id_detalle_pedido: id_detalle_pedido };
+    const params = { p_id_detalle_pedido: id };
 
     try {
         const result = await executeQuery(query, params);
