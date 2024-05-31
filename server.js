@@ -292,7 +292,9 @@ app.get('/cliente/findall', async (req, res) => {
 
 // Obtener cliente por correo electrónico
 app.get('/cliente/findbyid', async (req, res) => {
+    
     const { id } = req.query;
+    console.log(id)
     if (!id) {
         return res.status(400).send("El correo electrónico es obligatorio");
     }
