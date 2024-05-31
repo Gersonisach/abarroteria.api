@@ -155,7 +155,7 @@ app.post('/ordencompra/update', async (req, res) => {
 });
 
 // Cancelar orden de compra
-app.post('/ordencompra/cancel', async (req, res) => {
+app.post('/ordencompra/cancelar', async (req, res) => {
     const { id_orden_compra } = req.body;
     if (!id_orden_compra) {
         return res.status(400).send("El ID de la orden de compra es obligatorio");
@@ -578,7 +578,9 @@ app.get('/usuario/findall', async (req, res) => {
 
 // Obtener por id
 app.get('/usuario/findbyid', async (req, res) => {
+    
     const { id } = req.query;
+
     if (!id) {
         return res.status(400).send("El correo es obligatorio");
     }
@@ -642,7 +644,7 @@ app.post('/pedido/update', async (req, res) => {
 });
 
 // Finalizar pedido
-app.post('/pedido/finalize', async (req, res) => {
+app.post('/pedido/finalizar', async (req, res) => {
     const { id_pedido } = req.body;
     if (!id_pedido) {
         return res.status(400).send("El ID del pedido es obligatorio");
@@ -660,7 +662,7 @@ app.post('/pedido/finalize', async (req, res) => {
 });
 
 // Cancelar pedido
-app.post('/pedido/cancel', async (req, res) => {
+app.post('/pedido/cancelar', async (req, res) => {
     const { id_pedido } = req.body;
     if (!id_pedido) {
         return res.status(400).send("El ID del pedido es obligatorio");
@@ -728,7 +730,7 @@ app.get('/pedido/findbyid', async (req, res) => {
 
 //--------------------------------------DETALLE ORDEN COMPRA --------------------------------------------
 // Crear detalle de orden de compra
-app.post('/detalle_orden_compra/create', async (req, res) => {
+app.post('/detalleordencompra/create', async (req, res) => {
     const { id_orden_compra, id_producto, cantidad, precio_unitario } = req.body;
     if (!id_orden_compra || !id_producto || !cantidad || !precio_unitario) {
         return res.status(400).send("Todos los campos son obligatorios");
@@ -751,7 +753,7 @@ app.post('/detalle_orden_compra/create', async (req, res) => {
 });
 
 // Actualizar detalle de orden de compra
-app.post('/detalle_orden_compra/update', async (req, res) => {
+app.post('/detalleordencompra/update', async (req, res) => {
     const { id_detalle_orden_compra, id_orden_compra, id_producto, cantidad, precio_unitario } = req.body;
     if (!id_detalle_orden_compra || !id_orden_compra || !id_producto || !cantidad || !precio_unitario) {
         return res.status(400).send("Todos los campos son obligatorios");
@@ -775,7 +777,7 @@ app.post('/detalle_orden_compra/update', async (req, res) => {
 });
 
 // Eliminar detalle de orden de compra
-app.post('/detalle_orden_compra/delete', async (req, res) => {
+app.post('/detalleordencompra/delete', async (req, res) => {
     const { id_detalle_orden_compra } = req.body;
     if (!id_detalle_orden_compra) {
         return res.status(400).send("El ID del detalle de la orden de compra es obligatorio");
@@ -793,7 +795,7 @@ app.post('/detalle_orden_compra/delete', async (req, res) => {
 });
 
 // Obtener todos los detalles de orden de compra
-app.get('/detalle_orden_compra/findall', async (req, res) => {
+app.get('/detalleordencompra/findall', async (req, res) => {
     const query = `SELECT * FROM TABLE(obtener_todos_detalles_orden_compra)`;
 
     try {
@@ -805,7 +807,7 @@ app.get('/detalle_orden_compra/findall', async (req, res) => {
 });
 
 // Obtener detalle de orden de compra por ID
-app.get('/detalle_orden_compra/findbyid', async (req, res) => {
+app.get('/detalleordencompra/findbyid', async (req, res) => {
     const { id } = req.query;
     if (!id) {
         return res.status(400).send("El ID del detalle de la orden de compra es obligatorio");
@@ -868,7 +870,7 @@ app.post('/factura/update', async (req, res) => {
 });
 
 // Anular factura
-app.post('/factura/cancel', async (req, res) => {
+app.post('/factura/cancelar', async (req, res) => {
     const { id_factura } = req.body;
     if (!id_factura) {
         return res.status(400).send("Se requiere el ID de factura");
